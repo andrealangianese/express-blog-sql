@@ -7,8 +7,8 @@ const mysql = require('mysql2');
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
-    database: 'blog'
+    password: 'root',
+    database: 'db-new'
 });
 
 // stampo per vedere se hoqualche errore

@@ -10,22 +10,16 @@ const valoriPosts = require('./../posts')
 
 // index
 function index(req, res) {
-    // confronto, all'inizio avranno lo stesso valore
+   //preparo la query
 
-    let postFiltrati = valoriPosts
+   const sql = 'SELECT * FROM `posts`';
 
-    if(req.query.tag){
-        postFiltrati = valoriPosts.filter(
-            post => post.tags.includes(req.query.tag)
-        )
-    }
-
-    res.json({
-        count: postFiltrati.length,
-        posts: postFiltrati
-    })
-};
-
+   // eseguo la query
+    connection.query(sql, (err, results) => {
+        if (err) return res.status(500).json({ error: 'Database query failed' });
+        res.json(results);
+});
+}
 // show
 function show(req, res) {
 
