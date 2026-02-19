@@ -137,23 +137,18 @@ function destroy(req, res){
     //trasformo id in numero
     const id = parseInt(req.params.id)
     
-    //confronto id con post
 
-    const postId = valoriPosts.find(post => post.id === id)
+    const sql = 'DELETE FROM `posts` WHERE id = ?';
 
-    if (postId === undefined){
+    // elimino un post dal blog
 
-        //se non uso return non interrompo la funzione quindi non vedrò l'errore 404
+    connection.query(sql, [id], (err) => {
+        if (err) return res.status(500).json({message: 'non l\'hai ancora eliminata!!' })
+            res.sendStatus(204)
+    })
 
-        return res.status(404)
-    }
 
-    //rimuovo valorePost dai post 
-    valoriPosts.splice(valoriPosts.indexOf(postId), 1);
 
-    //forzo status 204 secondo condizioni di rest
-
-    res.sendStatus(204)
 
 };
 
