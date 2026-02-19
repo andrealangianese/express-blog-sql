@@ -10,50 +10,40 @@ const valoriPosts = require('./../posts')
 
 // index
 function index(req, res) {
-   //preparo la query
+    //preparo la query
 
-   const sql = 'SELECT * FROM `posts`';
+    const sql = 'SELECT * FROM `posts`';
 
-   // eseguo la query
+    // eseguo la query
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).json({ error: 'Database query failed' });
         res.json(results);
-});
+    });
 }
 // show
 function show(req, res) {
 
     //var per salvare id
 
-    const idPosts = parseInt(req.params.id)
+    const id = parseInt(req.params.id)
 
-    //confronto il valore di id
-
-    const post = valoriPosts.find(p => p.id === idPosts)
-
-    if (post === undefined){
-        res.status(404)
-
-        res.json("il post non esiste")
-    }
-
-    
-    res.json(post);
+    //salvo in una var la query sql
+    const sql = 'SELECT * FROM `posts` WHERE id = ?';
 };
 
 // store
 function store(req, res) {
-    
+
     //creazione del nuovo id da inserire
-    const idUpdate = valoriPosts[valoriPosts.length - 1].id +1;
+    const idUpdate = valoriPosts[valoriPosts.length - 1].id + 1;
 
     //creo un nuovo post per il blog
     const newPost = {
-        id : idUpdate,
-        title : req.body.title,
-        image : req.body.image,
-        content :req.body.content,
-        tags : req.body.tags
+        id: idUpdate,
+        title: req.body.title,
+        image: req.body.image,
+        content: req.body.content,
+        tags: req.body.tags
     }
 
     //aggiungo newPost al blog
@@ -63,7 +53,7 @@ function store(req, res) {
     //stampo in console per ulteriore verifica
 
     console.log(valoriPosts);
-    
+
     //ritorno lo status corretto e il nuovopost
     res.status(201);
     res.json(newPost)
@@ -71,15 +61,15 @@ function store(req, res) {
 
 // update
 function update(req, res) {
-    
+
     //trasformo id in numero
     const id = parseInt(req.params.id)
-    
+
     //confronto id con post
 
     const postUp = valoriPosts.find(post => post.id === id)
 
-    if (postId === undefined){
+    if (postId === undefined) {
 
         //se non uso return non interrompo la funzione quindi non vedrò l'errore 404
 
@@ -97,14 +87,14 @@ function update(req, res) {
 
     //restituisco i post aggiornati
     res.json(postUp)
-    
+
 };
 
 // modify
 function modify(req, res) {
     //trasformo id in numero
     const id = parseInt(req.params.id)
-    
+
     //confronto id con post
 
     const postMod = valoriPosts.find(post => post.id === id)
@@ -113,7 +103,7 @@ function modify(req, res) {
 
     throw new Error('Errore nel test del middleware')
 
-    if (postMod === undefined){
+    if (postMod === undefined) {
 
         //se non uso return non interrompo la funzione quindi non vedrò l'errore 404
 
@@ -122,29 +112,29 @@ function modify(req, res) {
 
     //se ci sono contencontenti aggiungo col ternario
 
-    req.body.title ? postMod.title =req.body.title : postMod.title = postMod.title
-    req.body.content ? postMod.content =req.body.content : postMod.content = postMod.content
-    req.body.image ? postMod.image =req.body.image : postMod.image = postMod.image
-    req.body.tags ? postMod.tags =req.body.tags : postMod.tags = postMod.tags
+    req.body.title ? postMod.title = req.body.title : postMod.title = postMod.title
+    req.body.content ? postMod.content = req.body.content : postMod.content = postMod.content
+    req.body.image ? postMod.image = req.body.image : postMod.image = postMod.image
+    req.body.tags ? postMod.tags = req.body.tags : postMod.tags = postMod.tags
 
 
     res.json(postMod)
 };
 
 // destroy
-function destroy(req, res){
+function destroy(req, res) {
 
     //trasformo id in numero
     const id = parseInt(req.params.id)
-    
+
 
     const sql = 'DELETE FROM `posts` WHERE id = ?';
 
     // elimino un post dal blog
 
     connection.query(sql, [id], (err) => {
-        if (err) return res.status(500).json({message: 'non l\'hai ancora eliminata!!' })
-            res.sendStatus(204)
+        if (err) return res.status(500).json({ message: 'non l\'hai ancora eliminata!!' })
+        res.sendStatus(204)
     })
 
 
@@ -154,4 +144,4 @@ function destroy(req, res){
 
 //rendo importabili da altri componenti queste rotte 
 
-module.exports = {index , store, update, modify , destroy, show}
+module.exports = { index, store, update, modify, destroy, show }
