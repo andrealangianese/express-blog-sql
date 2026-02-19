@@ -1,3 +1,7 @@
+//importo il file di connessione al database
+
+const connection = require('./../data/db-new')
+
 //importo valori posts
 
 const valoriPosts = require('./../posts')
